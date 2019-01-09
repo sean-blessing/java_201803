@@ -14,9 +14,9 @@ public class StuffyDispenserDBApp {
 		Console console = new Console();
 		int choice = 0;
 		StuffyDB sdb = new StuffyDB();
-		while (choice != 5) {
+		while (choice != 6) {
 			displayMenu();
-			choice = console.getInt("Enter option:  ",0,6);
+			choice = console.getInt("Enter option:  ",0,7);
 			if (choice == 1) {
 				// get a list of all stuffies
 				try {
@@ -65,6 +65,21 @@ public class StuffyDispenserDBApp {
 					e.printStackTrace();
 				}
 			}
+			else if (choice == 5) {
+				// Get a stuffy, but don't remove
+				System.out.println("Get a stuffy");
+				int id = console.getInt("Enter stuffy id:  ");
+				Stuffy s = null;
+				try {
+					s = sdb.get(id);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				if (s!=null)
+					System.out.println("You picked: "+s);
+				else 
+					System.out.println("No Stuffy w/ ID "+id+" found.");
+			}
 		}
 		
 		
@@ -77,6 +92,7 @@ public class StuffyDispenserDBApp {
 		System.out.println("2 - Grab a Stuffy");
 		System.out.println("3 - Add a Stuffy");
 		System.out.println("4 - Update a Stuffy");
-		System.out.println("5 - Exit");
+		System.out.println("5 - Get/Inspect a Stuffy");
+		System.out.println("6 - Exit");
 	}
 }

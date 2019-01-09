@@ -2,6 +2,7 @@ package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,9 +24,34 @@ public class StuffyDB implements DAO<Stuffy> {
 	}
 
 	@Override
-	public Stuffy get(String code) {
-		// TODO Auto-generated method stub
-		return null;
+	public Stuffy get(int id) throws SQLException {
+		
+		String sql = "select * from stuffy where id = ?";
+		Stuffy s = null;
+		
+		try (Connection conn = getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				s = getStuffyFromResultSet(rs);
+			}
+		}
+		catch (SQLException se) {
+			throw se;
+		}
+		return s;
+	}
+
+	private Stuffy getStuffyFromResultSet(ResultSet rs) throws SQLException {
+		Stuffy s;
+		// parse the resultset and create an instance of Stuffy
+		int id = rs.getInt(1);
+		String type = rs.getString(2);
+		String color = rs.getString(3);
+		String size = rs.getString(4);
+		s = new Stuffy(id, type, color, size);
+		return s;
 	}
 
 	@Override
@@ -35,11 +61,7 @@ public class StuffyDB implements DAO<Stuffy> {
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * from Stuffy");
 		while (rs.next()) {
-			int id = rs.getInt(1);
-			String type = rs.getString(2);
-			String color = rs.getString(3);
-			String size = rs.getString(4);
-			Stuffy s = new Stuffy(id, type, color, size);
+			Stuffy s = getStuffyFromResultSet(rs);
 			stuffies.add(s);
 		}
 		rs.close();
