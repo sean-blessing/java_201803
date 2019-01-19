@@ -26,8 +26,7 @@ public class Vendor {
 	private String email;
 	@Column(name="isPreApproved")
 	private boolean preApproved;
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name="VendorID")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="vendor")     
 	private List<Product> products;
 	
 	public Vendor() {
@@ -143,15 +142,22 @@ public class Vendor {
 		this.preApproved = preApproved;
 	}
 
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	@Override
 	public String toString() {
 		return "Vendor [id=" + id + ", code=" + code + ", name=" + name + ", address=" + address + ", city=" + city
 				+ ", state=" + state + ", zip=" + zip + ", phone=" + phoneNumber + ", email=" + email + ", preApproved="
-				+ preApproved + ", products: "+ products + "]";
+				+ preApproved + ", products : "+ products + "]";
 	}
 	
 	public String getSummary() {
-		return "Vendor code=" + code + ", Vendor Name = " + name +
-				" products: "+products;
+		return "Vendor code=" + code + ", Vendor Name = " + name;
 	}
 }
