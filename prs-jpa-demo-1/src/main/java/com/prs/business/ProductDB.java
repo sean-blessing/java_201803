@@ -9,13 +9,13 @@ import javax.persistence.Query;
 
 import com.prs.db.DBUtil;
 
-public class UserDB {
-	public static User getUserById(int userID) {
+public class ProductDB {
+	public static Product getProductById(int productID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		try {
-			User user = em.find(User.class, userID);
+			Product product = em.find(Product.class, productID);
 
-			return user;
+			return product;
 		} finally {
 			em.close();
 			// DBUtil.closeEMF();
@@ -23,29 +23,29 @@ public class UserDB {
 
 	}
 
-	public static List<User> getAll() {
+	public static List<Product> getAll() {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		List<User> users = new ArrayList<>();
+		List<Product> products = new ArrayList<>();
 		try {
-			Query q = em.createQuery("SELECT u FROM User u");
-			users = q.getResultList();
+			Query q = em.createQuery("SELECT p FROM Product p");
+			products = q.getResultList();
 
 		} finally {
 			em.close();
 			// DBUtil.closeEMF();
 		}
-		return users;
+		return products;
 	}
 
-	public static boolean delete(User u) {
+	public static boolean delete(Product p) {
 		boolean success = false;
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		trans.begin();
 		try {
-			User u2 = em.find(User.class, u.getId());
-			em.merge(u2);
-			em.remove(u2);
+			Product p2 = em.find(Product.class, p.getId());
+			em.merge(p2);
+			em.remove(p2);
 			trans.commit();
 			success = true;
 		} catch (Exception e) {

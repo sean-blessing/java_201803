@@ -1,4 +1,4 @@
-package com.prs.business;
+package com.bmdb.business;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import com.prs.db.DBUtil;
+import com.bmdb.db.DBUtil;
 
-public class UserDB {
-	public static User getUserById(int userID) {
+public class ActorDB {
+	public static Actor getActorById(int userID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		try {
-			User user = em.find(User.class, userID);
+			Actor user = em.find(Actor.class, userID);
 
 			return user;
 		} finally {
@@ -23,29 +23,29 @@ public class UserDB {
 
 	}
 
-	public static List<User> getAll() {
+	public static List<Actor> getAll() {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		List<User> users = new ArrayList<>();
+		List<Actor> actors = new ArrayList<>();
 		try {
-			Query q = em.createQuery("SELECT u FROM User u");
-			users = q.getResultList();
+			Query q = em.createQuery("SELECT a FROM Actor a");
+			actors = q.getResultList();
 
 		} finally {
 			em.close();
 			// DBUtil.closeEMF();
 		}
-		return users;
+		return actors;
 	}
 
-	public static boolean delete(User u) {
+	public static boolean delete(Actor a) {
 		boolean success = false;
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		trans.begin();
 		try {
-			User u2 = em.find(User.class, u.getId());
-			em.merge(u2);
-			em.remove(u2);
+			Actor a2 = em.find(Actor.class, a.getId());
+			em.merge(a2);
+			em.remove(a2);
 			trans.commit();
 			success = true;
 		} catch (Exception e) {

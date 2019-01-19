@@ -1,4 +1,4 @@
-package com.prs.business;
+package com.bmdb.business;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import com.prs.db.DBUtil;
+import com.bmdb.db.DBUtil;
 
-public class UserDB {
-	public static User getUserById(int userID) {
+public class MovieDB {
+	public static Movie getMovieById(int userID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		try {
-			User user = em.find(User.class, userID);
+			Movie user = em.find(Movie.class, userID);
 
 			return user;
 		} finally {
@@ -23,29 +23,29 @@ public class UserDB {
 
 	}
 
-	public static List<User> getAll() {
+	public static List<Movie> getAll() {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		List<User> users = new ArrayList<>();
+		List<Movie> movies = new ArrayList<>();
 		try {
-			Query q = em.createQuery("SELECT u FROM User u");
-			users = q.getResultList();
+			Query q = em.createQuery("SELECT m FROM Movie m");
+			movies = q.getResultList();
 
 		} finally {
 			em.close();
 			// DBUtil.closeEMF();
 		}
-		return users;
+		return movies;
 	}
 
-	public static boolean delete(User u) {
+	public static boolean delete(Movie m) {
 		boolean success = false;
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		trans.begin();
 		try {
-			User u2 = em.find(User.class, u.getId());
-			em.merge(u2);
-			em.remove(u2);
+			Movie m2 = em.find(Movie.class, m.getId());
+			em.merge(m2);
+			em.remove(m2);
 			trans.commit();
 			success = true;
 		} catch (Exception e) {
