@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.prs.db.DBUtil;
 
@@ -29,6 +30,24 @@ public class ProductDB {
 		try {
 			Query q = em.createQuery("SELECT p FROM Product p");
 			products = q.getResultList();
+
+		} finally {
+			em.close();
+			// DBUtil.closeEMF();
+		}
+		return products;
+	}
+
+	public static List<Product> getAllProductsByVendorID(int vid) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		List<Product> products = new ArrayList<>();
+		try {
+			String qString = "SELECT p FROM Product p"
+					+ " WHERE p.vendor.id = :inVid";
+			TypedQuery<Product> tq = em.createQuery(qString, Product.class);
+			tq.setParameter("inVid", vid);
+			
+			products = tq.getResultList();
 
 		} finally {
 			em.close();

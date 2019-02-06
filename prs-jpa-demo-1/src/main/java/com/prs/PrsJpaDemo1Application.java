@@ -63,6 +63,14 @@ public class PrsJpaDemo1Application {
 					System.out.println(p);
 				}
 			}
+			else if (o==5) {
+				// get all products for a given vendor
+				int vid = Console.getInt("Enter vendor id:  ");
+				List<Product> products = ProductDB.getAllProductsByVendorID(vid);
+				for (Product p: products) {
+					System.out.println(p);
+				}
+			}
 			
 		}
 		
@@ -74,6 +82,7 @@ public class PrsJpaDemo1Application {
 		System.out.println("2 - delete a user");
 		System.out.println("3 - list all vendors");
 		System.out.println("4 - list all products");
+		System.out.println("5 - get products by vendor id");
 		System.out.println("9 - exit");
 	}
 
